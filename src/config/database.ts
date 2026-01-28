@@ -1,16 +1,15 @@
 import pg from 'pg';
+import { env } from './env.js';
 import { logger } from './logger.js';
 
-// Database configuration - Supabase local development
+// Database configuration
 const config: pg.PoolConfig = {
-    user: 'postgres',
-    host: '127.0.0.1',
-    database: 'postgres',
-    password: 'postgres',
-    port: 54322,  // Supabase local port
+    connectionString: env.DATABASE_URL,
 };
 
-logger.info({ config: { ...config, password: '***' } }, 'Database configuration');
+// Log config (masking password if present in connection string)
+const safeConfig = { ...config, connectionString: '***' };
+logger.info({ config: safeConfig }, 'Database configuration');
 
 export const pool = new pg.Pool(config);
 
