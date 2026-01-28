@@ -1,11 +1,10 @@
 import { Hono } from 'hono';
 import { reviewService } from '../services/review.service.js';
 import { validate } from '../middleware/validator.js';
-import { createReviewSchema } from '../validators/review.validator.js';
+import { createReviewSchema, updateReviewSchema } from '../validators/review.validator.js';
 import { paginationSchema } from '../validators/query.validator.js';
 import { z } from 'zod';
-import type { CreateReviewDto, ReviewQueryParams } from '../types/review.types.js';
-import '../types/hono.js';
+import type { CreateReviewDto, ReviewQueryParams, UpdateReviewDto } from '../types/review.types.js';
 import { strictRateLimiter } from '../middleware/rate-limit.js';
 
 const reviewRoutes = new Hono();
@@ -58,6 +57,86 @@ reviewRoutes.get('/:id', async (c) => {
     return c.json({
         success: true,
         data: review,
+    });
+});
+
+// PATCH /api/v1/reviews/:id - Update review
+reviewRoutes.patch('/:id', strictRateLimiter, validate(updateReviewSchema, 'json'), async (c) => {
+    const id = parseInt(c.req.param('id'), 10);
+
+    if (isNaN(id)) {
+        return c.json(
+            {
+                success: false,
+                error: {
+                    code: 'VALIDATION_ERROR',
+                    message: 'Invalid review ID',
+                },
+            },
+            400
+        );
+    }
+
+    const data = c.get('validatedData') as UpdateReviewDto;
+
+    try {
+        const updatedReview = await reviewService.updateReview(id, data);
+        return c.json({
+            success: true,
+            data: updatedReview,
+        });
+    } catch (error) {
+        if (error instanceof Error && error.message === 'Review not found') {
+            return c.json(
+                {
+                    success: false,
+                    error: {
+                        code: 'REVIEW_NOT_FOUND',
+                        message: 'Review not found',
+                    },
+                },
+                404
+            );
+        }
+        throw error;
+    }
+});
+
+// DELETE /api/v1/reviews/:id - Delete review
+reviewRoutes.delete('/:id', async (c) => {
+    const id = parseInt(c.req.param('id'), 10);
+
+    if (isNaN(id)) {
+        return c.json(
+            {
+                success: false,
+                error: {
+                    code: 'VALIDATION_ERROR',
+                    message: 'Invalid review ID',
+                },
+            },
+            400
+        );
+    }
+
+    const deleted = await reviewService.deleteReview(id);
+
+    if (!deleted) {
+        return c.json(
+            {
+                success: false,
+                error: {
+                    code: 'REVIEW_NOT_FOUND',
+                    message: 'Review not found',
+                },
+            },
+            404
+        );
+    }
+
+    return c.json({
+        success: true,
+        message: 'Review deleted successfully',
     });
 });
 

@@ -20,3 +20,22 @@ export const createReviewSchema = z.object({
 });
 
 export type CreateReviewInput = z.infer<typeof createReviewSchema>;
+
+export const updateReviewSchema = z.object({
+    rating: z.number().int('Rating must be an integer').min(1).max(5).optional(),
+    comment: z.string().max(1000).trim().optional(),
+}).refine((data) => data.rating !== undefined || data.comment !== undefined, {
+    message: 'At least one field (rating or comment) must be provided',
+});
+
+export type UpdateReviewInput = z.infer<typeof updateReviewSchema>;
+
+export const reviewIdParamSchema = z.object({
+    id: z.string().regex(/^\d+$/, 'Invalid review ID'),
+});
+
+export const getReviewsQuerySchema = z.object({
+    movieId: z.string().optional(),
+    page: z.number().int().min(1).optional(),
+    limit: z.number().int().min(1).max(100).optional(),
+});
