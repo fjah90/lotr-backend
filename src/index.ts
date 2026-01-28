@@ -52,12 +52,11 @@ app.get('/api/openapi.json', (c) => {
             version: '1.0.0',
             description: 'Backend API for LOTR data with review management. Proxy for The One API with custom review functionality.',
         },
-        servers: [
-            {
-                url: `http://localhost:${env.PORT}`,
-                description: 'Local development',
-            },
-        ],
+        servers: env.NODE_ENV === 'production'
+            ? [{ url: '', description: 'Current server' }]
+            : [
+                { url: `http://localhost:${env.PORT}`, description: 'Local development' },
+            ],
         tags: [
             { name: 'Health', description: 'Health check' },
             { name: 'Movies', description: 'Movie data from The One API' },
@@ -274,10 +273,14 @@ app.get('/api/openapi.json', (c) => {
 
 // Root endpoint
 app.get('/', (c) => {
+    const baseUrl = env.NODE_ENV === 'production'
+        ? `${c.req.header('x-forwarded-proto') || 'https'}://${c.req.header('host')}`
+        : `http://localhost:${env.PORT}`;
+
     return c.json({
         message: 'Lord of the Rings API',
         version: '1.0.0',
-        documentation: `http://localhost:${env.PORT}/api/docs`,
+        documentation: `${baseUrl}/api/docs`,
         endpoints: {
             health: '/health',
             movies: '/api/v1/movies',
