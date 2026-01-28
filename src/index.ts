@@ -2,12 +2,12 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
-import { logger } from 'hono/logger';
+import { pinoLogger } from 'hono-pino';
+import appLogger from './config/logger.js';
 import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { generalRateLimiter, strictRateLimiter } from './middleware/rate-limit.js';
-import appLogger from './config/logger.js';
 
 // Routes
 import healthRoutes from './routes/health.routes.js';
@@ -18,7 +18,7 @@ import reviewRoutes from './routes/review.routes.js';
 const app = new Hono();
 
 // Middleware
-app.use('*', logger());
+app.use('*', pinoLogger({ logger: appLogger as any }));
 app.use('*', secureHeaders());
 app.use(
     '*',
