@@ -215,5 +215,23 @@ MIT
 
 ## 🚀 Despliegue
 
-*(Pendiente de definir servicio gratuito)*
+
+---
+
+## 🚀 Despliegue en Render.com (Gratis)
+
+Este proyecto incluye un archivo `render.yaml` (Blueprint) para un despliegue automático.
+
+1. **Crear cuenta** en [Render.com](https://render.com).
+2. Ir a **Blueprints** > **New Blueprint Instance**.
+3. Conectar tu repositorio de GitHub.
+4. Render detectará el archivo `render.yaml` y pre-configurará:
+   - **Web Service** (Docker)
+   - **PostgreSQL** (Managed, Free Tier)
+5. **Configurar Variables**:
+   - `ONE_API_KEY`: Ingresa tu API Key de The One API cuando se solicite.
+6. Click en **Apply**.
+
+¡Listo! Tu API y Base de Datos estarán en línea en unos minutos.
+
 
