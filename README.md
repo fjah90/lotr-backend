@@ -3,6 +3,10 @@
 > **Backend API para el universo de El Señor de los Anillos**  
 > Desarrollado con Node.js, Hono.js, TypeScript y PostgreSQL (Supabase)
 
+### 🌐 Live Demo
+**URL**: [https://lotr-backend-api-b98q.onrender.com](https://lotr-backend-api-b98q.onrender.com)
+**Docs**: [https://lotr-backend-api-b98q.onrender.com/api/docs](https://lotr-backend-api-b98q.onrender.com/api/docs)
+
 ---
 
 ## 📋 Tabla de Contenidos
@@ -232,6 +236,5 @@ Este proyecto incluye un archivo `render.yaml` (Blueprint) para un despliegue au
    - `ONE_API_KEY`: Ingresa tu API Key de The One API cuando se solicite.
 6. Click en **Apply**.
 
-¡Listo! Tu API y Base de Datos estarán en línea en unos minutos.
 
 
