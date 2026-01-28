@@ -106,6 +106,65 @@ class ReviewService {
             });
         }
     }
+
+    async updateReview(id: number, data: { rating?: number; comment?: string }): Promise<ReviewResponse> {
+        try {
+            const updates: string[] = [];
+            const values: any[] = [];
+            let paramIndex = 1;
+
+            if (data.rating !== undefined) {
+                updates.push(`rating = $${paramIndex++}`);
+                values.push(data.rating);
+            }
+
+            if (data.comment !== undefined) {
+                const sanitizedComment = sanitizeInput(data.comment);
+                updates.push(`comment = $${paramIndex++}`);
+                values.push(sanitizedComment);
+            }
+
+            if (updates.length === 0) {
+                throw new Error('No fields to update');
+            }
+
+            values.push(id);
+
+            const query = `
+                UPDATE reviews
+                SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP
+                WHERE id = $${paramIndex}
+                RETURNING *
+            `;
+
+            const result = await pool.query<Review>(query, values);
+
+            if (result.rows.length === 0) {
+                throw new NotFoundError('Review not found');
+            }
+
+            return this.mapReviewToResponse(result.rows[0]);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw error;
+            }
+            throw new DatabaseError('Failed to update review', {
+                error: error instanceof Error ? error.message : 'Unknown error',
+            });
+        }
+    }
+
+    async deleteReview(id: number): Promise<boolean> {
+        try {
+            const query = 'DELETE FROM reviews WHERE id = $1 RETURNING id';
+            const result = await pool.query(query, [id]);
+            return result.rowCount !== null && result.rowCount > 0;
+        } catch (error) {
+            throw new DatabaseError('Failed to delete review', {
+                error: error instanceof Error ? error.message : 'Unknown error',
+            });
+        }
+    }
 }
 
 export const reviewService = new ReviewService();
