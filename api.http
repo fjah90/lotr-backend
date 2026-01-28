@@ -1,0 +1,119 @@
+### Variables
+@baseUrl = http://localhost:3000
+@apiUrl = {{baseUrl}}/api/v1
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Root Endpoint
+GET {{baseUrl}}/
+
+###
+### MOVIES
+###
+
+### Get all movies (default pagination)
+GET {{apiUrl}}/movies
+
+### Get movies with custom pagination
+GET {{apiUrl}}/movies?page=1&limit=5
+
+### Get specific movie by ID
+# The Fellowship of the Ring ID
+GET {{apiUrl}}/movies/5cd95395de30eff6ebccde5c
+
+### Get another movie
+# The Two Towers ID
+GET {{apiUrl}}/movies/5cd95395de30eff6ebccde5d
+
+###
+### CHARACTERS
+###
+
+### Get all characters (default pagination)
+GET {{apiUrl}}/characters
+
+### Get characters with custom pagination
+GET {{apiUrl}}/characters?page=2&limit=20
+
+### Get specific character by ID
+# Gandalf ID
+GET {{apiUrl}}/characters/5cd99d4bde30eff6ebccfea0
+
+###
+### REVIEWS
+###
+
+### Create a review for The Fellowship of the Ring
+POST {{apiUrl}}/reviews
+Content-Type: application/json
+
+{
+  "movieId": "5cd95395de30eff6ebccde5c",
+  "userName": "John Doe",
+  "rating": 5,
+  "comment": "An absolute masterpiece! The Fellowship of the Ring set the standard for epic fantasy films."
+}
+
+### Create another review
+POST {{apiUrl}}/reviews
+Content-Type: application/json
+
+{
+  "movieId": "5cd95395de30eff6ebccde5d",
+  "userName": "Jane Smith",
+  "rating": 4,
+  "comment": "The Two Towers is amazing, though not quite as captivating as the first one."
+}
+
+### Create a review without comment (optional field)
+POST {{apiUrl}}/reviews
+Content-Type: application/json
+
+{
+  "movieId": "5cd95395de30eff6ebccde5c",
+  "userName": "Sam Wilson",
+  "rating": 5
+}
+
+### Get all reviews
+GET {{apiUrl}}/reviews
+
+### Get reviews for a specific movie
+GET {{apiUrl}}/reviews?movieId=5cd95395de30eff6ebccde5c
+
+### Get reviews with pagination
+GET {{apiUrl}}/reviews?page=1&limit=5
+
+### Get specific review by ID (replace with actual ID from created review)
+GET {{apiUrl}}/reviews/1
+
+###
+### ERROR SCENARIOS
+###
+
+### Invalid rating (should return validation error)
+POST {{apiUrl}}/reviews
+Content-Type: application/json
+
+{
+  "movieId": "5cd95395de30eff6ebccde5c",
+  "userName": "Test User",
+  "rating": 6,
+  "comment": "This should fail - rating too high"
+}
+
+### Missing required fields (should return validation error)
+POST {{apiUrl}}/reviews
+Content-Type: application/json
+
+{
+  "userName": "Test User",
+  "rating": 5
+}
+
+### Invalid movie ID (should return API error)
+GET {{apiUrl}}/movies/invalid-id-12345
+
+### Invalid pagination parameters
+GET {{apiUrl}}/movies?page=-1&limit=1000
