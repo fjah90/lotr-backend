@@ -17,6 +17,11 @@ export interface CreateReviewDto {
     comment?: string;
 }
 
+export interface UpdateReviewDto {
+    rating?: number;
+    comment?: string;
+}
+
 // DTO for review response
 export interface ReviewResponse {
     id: number;
