@@ -9,6 +9,12 @@ class OneApiService {
     constructor() {
         this.baseUrl = env.ONE_API_BASE_URL;
         this.apiKey = env.ONE_API_KEY;
+        console.log('DEBUG OneApiService:', {
+            baseUrl: this.baseUrl,
+            apiKeyLength: this.apiKey?.length,
+            apiKeyStart: this.apiKey?.substring(0, 5) + '...',
+            apiKeyEnd: '...' + this.apiKey?.slice(-3)
+        });
     }
 
     private async fetch<T>(endpoint: string): Promise<OneApiResponse<T>> {
