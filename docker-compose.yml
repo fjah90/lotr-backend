@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: lotr-postgres
+    environment:
+      POSTGRES_USER: lotr_user
+      POSTGRES_PASSWORD: lotr_password
+      POSTGRES_DB: lotr_db
+      POSTGRES_INITDB_ARGS: "--auth=md5"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lotr_user -d lotr_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  postgres_data:
