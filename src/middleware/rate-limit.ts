@@ -1,5 +1,5 @@
 import { rateLimiter } from 'hono-rate-limiter';
-import type { Context, Next } from 'hono';
+import type { Context } from 'hono';
 
 // General rate limiter: 100 requests per 15 minutes
 export const generalRateLimiter = rateLimiter({

@@ -9,6 +9,7 @@ const envSchema = z.object({
     DATABASE_URL: z.string().url(),
     ONE_API_KEY: z.string().min(1, 'The One API key is required'),
     ONE_API_BASE_URL: z.string().url().default('https://the-one-api.dev/v2'),
+    CORS_ORIGIN: z.string().default('*'),
 });
 
 function validateEnv() {

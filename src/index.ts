@@ -8,7 +8,7 @@ import appLogger from './config/logger.js';
 import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
 import { errorHandler } from './middleware/error-handler.js';
-import { generalRateLimiter, strictRateLimiter } from './middleware/rate-limit.js';
+import { generalRateLimiter } from './middleware/rate-limit.js';
 
 // Routes
 import healthRoutes from './routes/health.routes.js';
@@ -19,7 +19,7 @@ import reviewRoutes from './routes/review.routes.js';
 const app = new Hono();
 
 // Middleware
-app.use('*', pinoLogger({ logger: appLogger as any }));
+app.use('*', pinoLogger({ pino: appLogger as any }));
 app.use('*', secureHeaders());
 app.use(
     '*',
