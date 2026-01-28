@@ -4,12 +4,14 @@ import { validate } from '../middleware/validator.js';
 import { createReviewSchema } from '../validators/review.validator.js';
 import { paginationSchema } from '../validators/query.validator.js';
 import { z } from 'zod';
+import type { CreateReviewDto, ReviewQueryParams } from '../types/review.types.js';
+import '../types/hono.js';
 
 const reviewRoutes = new Hono();
 
 // POST /api/v1/reviews - Create a new review
 reviewRoutes.post('/', validate(createReviewSchema, 'json'), async (c) => {
-    const data = c.get('validatedData');
+    const data = c.get('validatedData') as CreateReviewDto;
     const review = await reviewService.createReview(data);
 
     return c.json(
@@ -27,7 +29,7 @@ const reviewQuerySchema = paginationSchema.extend({
 });
 
 reviewRoutes.get('/', validate(reviewQuerySchema, 'query'), async (c) => {
-    const params = c.get('validatedData');
+    const params = c.get('validatedData') as ReviewQueryParams;
     const result = await reviewService.getReviews(params);
 
     return c.json(result);

@@ -5,6 +5,12 @@ export interface ApiResponse<T> {
     error?: ErrorResponse;
 }
 
+// Pagination query parameters
+export interface PaginationParams {
+    page: number;
+    limit: number;
+}
+
 // Error response structure
 export interface ErrorResponse {
     code: string;

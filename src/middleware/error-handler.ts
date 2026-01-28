@@ -78,7 +78,7 @@ export const errorHandler = async (err: Error, c: Context) => {
                     details: err.details,
                 },
             },
-            err.statusCode
+            err.statusCode as 400 | 404 | 500 | 502
         );
     }
 
