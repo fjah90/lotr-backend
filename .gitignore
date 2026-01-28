@@ -35,5 +35,4 @@ supabase/.branches
 # Build
 build/
 
-# Package manager
-pnpm-lock.yaml
+
