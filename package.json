@@ -1,0 +1,39 @@
+{
+  "name": "lotr-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Lord of the Rings data with review management",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:migrate": "node -r dotenv/config scripts/migrate.js",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": ["lotr", "api", "hono", "typescript", "postgresql"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@hono/node-server": "^1.8.0",
+    "pg": "^8.11.3",
+    "zod": "^3.22.4",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/pg": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
