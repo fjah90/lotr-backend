@@ -5,6 +5,7 @@ import { logger } from 'hono/logger';
 import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
 import { errorHandler } from './middleware/error-handler.js';
+import { generalRateLimiter, strictRateLimiter } from './middleware/rate-limit.js';
 
 // Routes
 import healthRoutes from './routes/health.routes.js';
@@ -17,6 +18,7 @@ const app = new Hono();
 // Middleware
 app.use('*', logger());
 app.use('*', cors());
+app.use('*', generalRateLimiter);
 
 // Routes
 app.route('/health', healthRoutes);
