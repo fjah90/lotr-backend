@@ -120,7 +120,45 @@ pnpm db:migrate
 
 > 💡 **Note**: Migrations are stored in `supabase/migrations/` for CLI approach
 
-### 5. Run the application
+### 5. API Documentation
+
+#### Swagger UI (Interactive)
+
+Once the server is running, access the interactive API documentation:
+
+**URL**: `http://localhost:3000/api/docs`
+
+Features:
+- 🎯 Try endpoints directly in the browser
+- 📋 View request/response schemas
+- 🔍 Explore all available endpoints
+- 📝 See example payloads
+
+#### Postman Collection
+
+Import the pre-configured Postman collection:
+
+1. Open Postman
+2. Click **Import**
+3. Select `docs/postman_collection.json`
+4. Collection will be imported with all endpoints ready
+
+The collection includes:
+- All API endpoints (Health, Movies, Characters, Reviews)
+- Pre-configured request examples
+- Environment variable for `base_url`
+- Sample payloads
+
+**Quick test:**
+```bash
+# Make sure the server is running
+pnpm dev
+
+# Test health endpoint
+GET http://localhost:3000/health
+```
+
+### 6. Run the application
 
 **Development mode with hot reload:**
 ```bash
