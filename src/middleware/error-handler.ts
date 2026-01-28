@@ -1,5 +1,6 @@
 import type { Context } from 'hono';
 import { ZodError } from 'zod';
+import logger from '../config/logger.js';
 
 // Custom error classes
 export class AppError extends Error {
@@ -44,7 +45,7 @@ export class NotFoundError extends AppError {
 
 // Global error handler middleware
 export const errorHandler = async (err: Error, c: Context) => {
-    console.error('Error:', err);
+    logger.error({ err }, 'Request error');
 
     // Handle Zod validation errors
     if (err instanceof ZodError) {

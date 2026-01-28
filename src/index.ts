@@ -7,6 +7,7 @@ import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { generalRateLimiter, strictRateLimiter } from './middleware/rate-limit.js';
+import appLogger from './config/logger.js';
 
 // Routes
 import healthRoutes from './routes/health.routes.js';
@@ -53,17 +54,17 @@ app.onError(errorHandler);
 
 // Start server
 const startServer = async () => {
-    console.log('🚀 Starting Lord of the Rings API...\n');
+    appLogger.info('🚀 Starting Lord of the Rings API...\n');
 
     // Test database connection
     const dbConnected = await testConnection();
     if (!dbConnected) {
-        console.error('❌ Failed to connect to database. Exiting...');
+        appLogger.error('❌ Failed to connect to database. Exiting...');
         process.exit(1);
     }
 
-    console.log(`\n🎬 Server running on http://localhost:${env.PORT}`);
-    console.log(`📚 Environment: ${env.NODE_ENV}\n`);
+    appLogger.info(`\n🎬 Server running on http://localhost:${env.PORT}`);
+    appLogger.info(`📚 Environment: ${env.NODE_ENV}\n`);
 
     serve({
         fetch: app.fetch,

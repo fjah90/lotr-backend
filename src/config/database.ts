@@ -1,5 +1,6 @@
 import pg from 'pg';
 import { env } from './env.js';
+import logger from './logger.js';
 
 const { Pool } = pg;
 
@@ -12,10 +13,10 @@ export async function testConnection(): Promise<boolean> {
         const client = await pool.connect();
         await client.query('SELECT 1');
         client.release();
-        console.log('✅ Database connection successful');
+        logger.info('✅ Database connection successful');
         return true;
     } catch (error) {
-        console.error('❌ Database connection failed:', error instanceof Error ? error.message : error);
+        logger.error({ err: error }, '❌ Database connection failed');
         return false;
     }
 }
