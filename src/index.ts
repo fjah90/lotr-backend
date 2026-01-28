@@ -2,7 +2,8 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { secureHeaders } from 'hono/secure-headers';
-import { logger } from 'hono/logger';
+import { pinoLogger } from 'hono-pino';
+import logger from './config/logger.js';
 import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
 import { errorHandler } from './middleware/error-handler.js';
@@ -17,7 +18,7 @@ import reviewRoutes from './routes/review.routes.js';
 const app = new Hono();
 
 // Middleware
-app.use('*', logger());
+app.use('*', pinoLogger({ logger }));
 app.use('*', secureHeaders());
 app.use(
     '*',
@@ -53,17 +54,17 @@ app.onError(errorHandler);
 
 // Start server
 const startServer = async () => {
-    console.log('🚀 Starting Lord of the Rings API...\n');
+    logger.info('🚀 Starting Lord of the Rings API...\n');
 
     // Test database connection
     const dbConnected = await testConnection();
     if (!dbConnected) {
-        console.error('❌ Failed to connect to database. Exiting...');
+        logger.error('❌ Failed to connect to database. Exiting...');
         process.exit(1);
     }
 
-    console.log(`\n🎬 Server running on http://localhost:${env.PORT}`);
-    console.log(`📚 Environment: ${env.NODE_ENV}\n`);
+    logger.info(`\n🎬 Server running on http://localhost:${env.PORT}`);
+    logger.info(`📚 Environment: ${env.NODE_ENV}\n`);
 
     serve({
         fetch: app.fetch,
