@@ -1,6 +1,7 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { secureHeaders } from 'hono/secure-headers';
 import { logger } from 'hono/logger';
 import { env } from './config/env.js';
 import { testConnection } from './config/database.js';
@@ -17,7 +18,14 @@ const app = new Hono();
 
 // Middleware
 app.use('*', logger());
-app.use('*', cors());
+app.use('*', secureHeaders());
+app.use(
+    '*',
+    cors({
+        origin: env.CORS_ORIGIN === '*' ? '*' : env.CORS_ORIGIN.split(','),
+        credentials: true,
+    })
+);
 app.use('*', generalRateLimiter);
 
 // Routes
