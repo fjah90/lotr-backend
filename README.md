@@ -210,21 +210,10 @@ lotr-backend/
 
 MIT
 
+
 ---
 
-## 🚀 Despliegue en Fly.io
+## 🚀 Despliegue
 
-1. **Instalar Fly CLI** y loguearse (`fly auth login`).
-2. **Setup inicial** (si no usas el `fly.toml` incluido):
-   ```bash
-   fly launch --no-deploy
-   ```
-3. **Configurar Secretos**:
-   ```bash
-   fly secrets set ONE_API_KEY=tu_api_key_aqui
-   fly secrets set DATABASE_URL=tu_cadena_de_conexion_produccion
-   ```
-4. **Desplegar**:
-   ```bash
-   fly deploy
-   ```
+*(Pendiente de definir servicio gratuito)*
+
