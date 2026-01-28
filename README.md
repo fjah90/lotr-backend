@@ -1,367 +1,213 @@
-# UMIA Dev - Technical Test [Backend]
-# Lord of the Rings API
+# 🎬 LOTR Backend API - Prueba Técnica
 
-Backend application built with Node.js, Hono.js, and TypeScript that serves as a proxy for The One API and manages movie reviews.
+> **Backend API para el universo de El Señor de los Anillos**  
+> Desarrollado con Node.js, Hono.js, TypeScript y PostgreSQL (Supabase)
 
-## 🚀 Features
+---
 
-- **Proxy Endpoints**: Access Lord of the Rings movies and characters data
-- **Review System**: Create and retrieve movie reviews with validation
-- **Type Safety**: Strict TypeScript implementation with Zod validation
-- **Error Handling**: Global error middleware with consistent error responses
-- **Database**: PostgreSQL for persistent review storage
-- **Docker Ready**: Easy setup with Docker Compose
+## 📋 Tabla de Contenidos
 
-## 📋 Prerequisites
+- [Descripción](#-descripción)
+- [Tecnologías](#-tecnologías)
+- [Requisitos Previos](#-requisitos-previos)
+- [Instalación con Docker](#-instalación-con-docker)
+- [Instalación Manual](#-instalación-manual-desarrollo)
+- [Documentación API (Swagger)](#-documentación-api-swagger)
+- [Colección Postman](#-colección-postman)
+- [Endpoints](#-endpoints)
+- [Variables de Entorno](#-variables-de-entorno)
 
-- Node.js >= 18.0.0
-- Docker and Docker Compose (recommended)
-- PostgreSQL (if not using Docker)
-- The One API key from [the-one-api.dev](https://the-one-api.dev)
+---
 
-## 🛠️ Installation
+## 📖 Descripción
 
-### 1. Clone the repository
+Backend que actúa como **proxy** para [The One API](https://the-one-api.dev) e implementa un sistema CRUD para **reseñas de películas**.
+
+### Funcionalidades:
+
+- ✅ **Películas**: Proxy a The One API
+- ✅ **Personajes**: Proxy a The One API  
+- ✅ **Reseñas (CRUD)**: Create, Read, Update, Delete
+- ✅ **Validación**: Zod + TypeScript estricto (sin `any`)
+- ✅ **Seguridad**: Rate limiting, headers seguros, sanitización XSS
+
+---
+
+## 🛠 Tecnologías
+
+| Tecnología | Versión |
+|------------|---------|
+| Node.js | >= 18 |
+| TypeScript | 5.x (strict) |
+| Hono.js | 4.x |
+| PostgreSQL | 17 (Supabase) |
+| Docker | - |
+
+---
+
+## ⚙️ Requisitos Previos
+
+- **Docker Desktop** instalado y corriendo
+- **Node.js >= 18** y **pnpm**
+- API Key de [The One API](https://the-one-api.dev) (registro gratuito)
+
+---
+
+## 🐳 Instalación con Docker
+
+### 1. Clonar y configurar
 
 ```bash
-git clone <repository-url>
+git clone <URL_DEL_REPOSITORIO>
 cd lotr-backend
-```
-
-### 2. Install dependencies
-
-> **Note**: This project uses **pnpm** as the package manager.
-
-```bash
-# Install pnpm globally if you don't have it
-npm install -g pnpm
-
-# Install project dependencies
 pnpm install
-```
-
-### 3. Configure environment variables
-
-```bash
 cp .env.example .env
 ```
 
-Edit `.env` and add your The One API key:
+Editar `.env` y agregar tu API Key:
 
 ```env
-PORT=3000
-NODE_ENV=development
-DATABASE_URL=postgresql://lotr_user:lotr_password@localhost:5432/lotr_db
-ONE_API_KEY=your_actual_api_key_here
-ONE_API_BASE_URL=https://the-one-api.dev/v2
+ONE_API_KEY=tu_api_key_aqui
 ```
 
-### 4. Database Setup
+### 2. Iniciar Supabase (Base de Datos)
 
-### Option 1: Local PostgreSQL (Docker)
-
-Start PostgreSQL using Docker:
 ```bash
-docker-compose up -d
+npx supabase start
 ```
 
-This will:
-- Start PostgreSQL on port 5432
-- Automatically create the database and schema
-- Set up persistent volumes
+Esto levanta PostgreSQL en el puerto `54322` y ejecuta las migraciones automáticamente.
 
-Run migrations:
+### 3. Iniciar el Backend con Docker
+
 ```bash
-pnpm db:migrate
+docker-compose up -d --build
 ```
 
-### Option 2: Supabase (Recommended for Production)
+### 4. Verificar
 
-#### Quick Setup (Script-based)
+```bash
+# Estado de contenedores
+docker-compose ps
 
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Get your DATABASE_URL from Settings → Database
-3. Update `.env`:
-   ```bash
-   DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
-   ```
-4. Run migration:
-   ```bash
-   pnpm db:migrate
-   ```
+# Probar API
+curl http://localhost:3000/health
+```
 
-#### Advanced Setup (Supabase CLI)
+### Comandos útiles
 
-1. Install Supabase CLI:
-   ```bash
-   npm install -g supabase
-   ```
+```bash
+# Ver logs del backend
+docker-compose logs -f api
 
-2. Initialize (if not already done):
-   ```bash
-   supabase init
-   ```
+# Detener backend
+docker-compose down
 
-3. Link to your project:
-   ```bash
-   supabase link --project-ref YOUR_PROJECT_REF
-   ```
+# Detener todo (incluyendo Supabase)
+docker-compose down && npx supabase stop
+```
 
-4. Push migrations:
-   ```bash
-   supabase db push
-   ```
+---
 
-**Benefits of Supabase CLI:**
-- Version-controlled migrations
-- Automatic schema diffing
-- Rollback capabilities
-- Team collaboration
+## 💻 Instalación Manual (Desarrollo)
 
-> 💡 **Note**: Migrations are stored in `supabase/migrations/` for CLI approach
+Para desarrollo local con hot reload:
 
-### 5. API Documentation
+```bash
+# Instalar dependencias
+pnpm install
 
-#### Swagger UI (Interactive)
+# Iniciar Supabase
+npx supabase start
 
-Once the server is running, access the interactive API documentation:
+# Ejecutar migraciones (primera vez)
+npx supabase db push
 
-**URL**: `http://localhost:3000/api/docs`
+# Iniciar servidor con hot reload
+pnpm dev
+```
 
-Features:
-- 🎯 Try endpoints directly in the browser
-- 📋 View request/response schemas
-- 🔍 Explore all available endpoints
-- 📝 See example payloads
+---
 
-#### Postman Collection
+## 📚 Documentación API (Swagger)
 
-Import the pre-configured Postman collection:
+Una vez el servidor esté corriendo, accede a la documentación interactiva:
 
-1. Open Postman
+**🔗 URL: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
+
+---
+
+## 📬 Colección Postman
+
+Importa la colección preconfigurada:
+
+1. Abre **Postman**
 2. Click **Import**
-3. Select `docs/postman_collection.json`
-4. Collection will be imported with all endpoints ready
+3. Selecciona: `docs/postman_collection.json`
 
-The collection includes:
-- All API endpoints (Health, Movies, Characters, Reviews)
-- Pre-configured request examples
-- Environment variable for `base_url`
-- Sample payloads
+---
 
-**Quick test:**
-```bash
-# Make sure the server is running
-pnpm dev
+## 📍 Endpoints
 
-# Test health endpoint
-GET http://localhost:3000/health
-```
-
-### 6. Run the application
-
-**Development mode with hot reload:**
-```bash
-pnpm dev
-```
-
-**Production build:**
-```bash
-pnpm build
-pnpm start
-```
-
-The server will start on `http://localhost:3000`
-
-## 📚 API Endpoints
-
-### Health Check
+### Health
 ```http
 GET /health
 ```
-Returns service health status and database connectivity.
 
-### Movies
-
-**List all movies:**
+### Películas
 ```http
 GET /api/v1/movies
-```
-
-Query parameters:
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 10, max: 100)
-
-**Get specific movie:**
-```http
 GET /api/v1/movies/:id
 ```
 
-### Characters
-
-**List all characters:**
+### Personajes
 ```http
 GET /api/v1/characters
-```
-
-Query parameters:
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 10, max: 100)
-
-**Get specific character:**
-```http
 GET /api/v1/characters/:id
 ```
 
-### Reviews
-
-**Create a review:**
+### Reseñas (CRUD)
 ```http
-POST /api/v1/reviews
-Content-Type: application/json
-
-{
-  "movieId": "5cd95395de30eff6ebccde5c",
-  "userName": "John Doe",
-  "rating": 5,
-  "comment": "Amazing movie!"
-}
+POST   /api/v1/reviews          # Crear
+GET    /api/v1/reviews          # Listar
+GET    /api/v1/reviews/:id      # Obtener
+PATCH  /api/v1/reviews/:id      # Actualizar
+DELETE /api/v1/reviews/:id      # Eliminar
 ```
 
-**Get reviews:**
-```http
-GET /api/v1/reviews?movieId=5cd95395de30eff6ebccde5c
-```
+---
 
-Query parameters:
-- `movieId` - Filter by movie ID
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 10, max: 100)
+## 🔐 Variables de Entorno
 
-**Get specific review:**
-```http
-GET /api/v1/reviews/:id
-```
+| Variable | Descripción | Requerida |
+|----------|-------------|-----------|
+| `PORT` | Puerto del servidor | No (default: 3000) |
+| `DATABASE_URL` | URL PostgreSQL | ✅ Sí |
+| `ONE_API_KEY` | API Key de The One API | ✅ Sí |
 
-## 🧪 Testing Endpoints
+---
 
-Use the included `api.http` file with REST Client (VS Code) or Insomnia:
-
-1. Install REST Client extension in VS Code
-2. Open `api.http`
-3. Click "Send Request" above each request
-
-## 🏗️ Project Structure
+## 📁 Estructura
 
 ```
 lotr-backend/
 ├── src/
-│   ├── config/          # Configuration (env, database)
-│   ├── db/              # Database schema and queries
-│   ├── middleware/      # Error handling, validation
-│   ├── routes/          # API route handlers
-│   ├── services/        # Business logic
-│   ├── types/           # TypeScript interfaces
-│   ├── validators/      # Zod validation schemas
-│   └── index.ts         # Application entry point
-├── docker-compose.yml   # Docker configuration
-└── package.json        # Dependencies and scripts
+│   ├── config/        # Configuración
+│   ├── middleware/    # Middlewares
+│   ├── routes/        # Rutas API
+│   ├── services/      # Lógica de negocio
+│   └── validators/    # Esquemas Zod
+├── supabase/
+│   ├── config.toml    # Config de Supabase
+│   └── migrations/    # Migraciones SQL
+├── docs/
+│   └── postman_collection.json
+├── docker-compose.yml # Solo backend
+└── Dockerfile
 ```
 
-## 🔒 Environment Variables
+---
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PORT` | Server port | No (default: 3000) |
-| `NODE_ENV` | Environment mode | No (default: development) |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `ONE_API_KEY` | The One API access token | Yes |
-| `ONE_API_BASE_URL` | The One API base URL | Yes |
-
-## 🚢 Deployment
-
-### Option 1: Docker Deployment
-
-Build and run the application container:
-
-```bash
-# Build the image
-docker build -t lotr-backend .
-
-# Run with docker-compose (includes database)
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-### Option 2: Traditional Deployment
-
-1. **Set up PostgreSQL** on your server (or use managed service like Supabase/Neon)
-2. **Configure environment** variables for production
-3. **Build the application:**
-   ```bash
-   pnpm build
-   ```
-4. **Run with a process manager:**
-   ```bash
-   pnpm add -g pm2
-   pm2 start dist/index.js --name lotr-backend
-   ```
-
-### Database Migration
-
-For production, run the schema manually:
-
-```bash
-psql $DATABASE_URL -f src/db/schema.sql
-```
-
-## 🛡️ Error Handling
-
-All endpoints return consistent error responses:
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Invalid input data",
-    "details": {
-      "rating": "Rating must be between 1 and 5"
-    }
-  }
-}
-```
-
-Error codes:
-- `VALIDATION_ERROR` - Invalid request data
-- `API_ERROR` - External API failure
-- `DATABASE_ERROR` - Database operation failure
-- `NOT_FOUND` - Resource not found
-- `INTERNAL_ERROR` - Unexpected server error
-
-## 📝 Development
-
-**Type checking:**
-```bash
-pnpm type-check
-```
-
-**Linting:**
-```bash
-pnpm lint
-```
-
-**Formatting:**
-```bash
-pnpm format
-```
-
-## 📖 Additional Resources
-
-- [Hono.js Documentation](https://hono.dev)
-- [The One API Docs](https://the-one-api.dev/documentation)
-- [Zod Documentation](https://zod.dev)
-- [PostgreSQL Docs](https://www.postgresql.org/docs/)
-
-## 📄 License
+## 📄 Licencia
 
 MIT
