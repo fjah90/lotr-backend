@@ -285,6 +285,71 @@
                         "description": "Get a specific review by ID"
                     },
                     "response": []
+                },
+                {
+                    "name": "Update Review",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated comment: A truly fantastic experience!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "",
+                                    "description": "Review UUID"
+                                }
+                            ]
+                        },
+                        "description": "Update an existing review"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Review",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "",
+                                    "description": "Review UUID"
+                                }
+                            ]
+                        },
+                        "description": "Delete a review by ID"
+                    },
+                    "response": []
                 }
             ]
         }
