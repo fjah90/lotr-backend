@@ -23,12 +23,17 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Testing
+# Test coverage
 coverage/
+
+# Supabase
+.branches
+.temp
+supabase/.temp
+supabase/.branches
 
 # Build
 build/
 
 # Package manager
 pnpm-lock.yaml
-
