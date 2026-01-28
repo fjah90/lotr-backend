@@ -1,0 +1,299 @@
+{
+    "info": {
+        "name": "Lord of the Rings API",
+        "_postman_id": "lotr-backend-collection",
+        "description": "Complete API collection for LOTR Backend\n\nFeatures:\n- Movie data from The One API\n- Character data from The One API\n- User review management\n- Health monitoring\n\nGet started by setting up environment variables.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/health",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "health"
+                            ]
+                        },
+                        "description": "Check if the API is running and healthy"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Movies",
+            "item": [
+                {
+                    "name": "Get All Movies",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/movies?page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "movies"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                }
+                            ]
+                        },
+                        "description": "Fetch all LOTR movies with pagination"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Movie by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/movies/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "movies",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "5cd95395de30eff6ebccde5d",
+                                    "description": "Movie ID"
+                                }
+                            ]
+                        },
+                        "description": "Get details of a specific movie"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Characters",
+            "item": [
+                {
+                    "name": "Get All Characters",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/characters?page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "characters"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                }
+                            ]
+                        },
+                        "description": "Fetch all LOTR characters with pagination"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Character by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/characters/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "characters",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "5cd99d4bde30eff6ebccfbbe",
+                                    "description": "Character ID (e.g., Frodo)"
+                                }
+                            ]
+                        },
+                        "description": "Get details of a specific character"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Reviews",
+            "item": [
+                {
+                    "name": "Create Review",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"movieId\": \"5cd95395de30eff6ebccde5d\",\n  \"userName\": \"Gandalf\",\n  \"rating\": 5,\n  \"comment\": \"An epic journey! The cinematography and storytelling are magnificent.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews"
+                            ]
+                        },
+                        "description": "Create a new review for a movie\n\nRate limit: 10 requests per 15 minutes"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Reviews",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews?page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                }
+                            ]
+                        },
+                        "description": "Get all reviews with pagination"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Reviews by Movie",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews?movieId=5cd95395de30eff6ebccde5d&page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews"
+                            ],
+                            "query": [
+                                {
+                                    "key": "movieId",
+                                    "value": "5cd95395de30eff6ebccde5d",
+                                    "description": "Filter by movie ID"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        },
+                        "description": "Get reviews for a specific movie"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Review by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reviews/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reviews",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "",
+                                    "description": "Review UUID"
+                                }
+                            ]
+                        },
+                        "description": "Get a specific review by ID"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000",
+            "type": "string"
+        }
+    ]
+}
