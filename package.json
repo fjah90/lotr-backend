@@ -13,15 +13,22 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["lotr", "api", "hono", "typescript", "postgresql"],
+  "keywords": [
+    "lotr",
+    "api",
+    "hono",
+    "typescript",
+    "postgresql"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "hono": "^4.0.0",
     "@hono/node-server": "^1.8.0",
+    "dotenv": "^16.4.1",
+    "hono": "^4.0.0",
+    "hono-rate-limiter": "^0.5.3",
     "pg": "^8.11.3",
-    "zod": "^3.22.4",
-    "dotenv": "^16.4.1"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

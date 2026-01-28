@@ -6,11 +6,12 @@ import { paginationSchema } from '../validators/query.validator.js';
 import { z } from 'zod';
 import type { CreateReviewDto, ReviewQueryParams } from '../types/review.types.js';
 import '../types/hono.js';
+import { strictRateLimiter } from '../middleware/rate-limit.js';
 
 const reviewRoutes = new Hono();
 
 // POST /api/v1/reviews - Create a new review
-reviewRoutes.post('/', validate(createReviewSchema, 'json'), async (c) => {
+reviewRoutes.post('/', strictRateLimiter, validate(createReviewSchema, 'json'), async (c) => {
     const data = c.get('validatedData') as CreateReviewDto;
     const review = await reviewService.createReview(data);
 
