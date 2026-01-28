@@ -1,12 +1,18 @@
 import pg from 'pg';
-import { env } from './env.js';
-import logger from './logger.js';
+import { logger } from './logger.js';
 
-const { Pool } = pg;
+// Database configuration - Supabase local development
+const config: pg.PoolConfig = {
+    user: 'postgres',
+    host: '127.0.0.1',
+    database: 'postgres',
+    password: 'postgres',
+    port: 54322,  // Supabase local port
+};
 
-export const pool = new Pool({
-    connectionString: env.DATABASE_URL,
-});
+logger.info({ config: { ...config, password: '***' } }, 'Database configuration');
+
+export const pool = new pg.Pool(config);
 
 export async function testConnection(): Promise<boolean> {
     try {
