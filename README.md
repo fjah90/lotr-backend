@@ -58,7 +58,7 @@ ONE_API_BASE_URL=https://the-one-api.dev/v2
 
 ### 4. Database Setup
 
-### Option 1: Local PostgreSQL (Development)
+### Option 1: Local PostgreSQL (Docker)
 
 Start PostgreSQL using Docker:
 ```bash
