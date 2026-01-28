@@ -110,7 +110,7 @@ class ReviewService {
     async updateReview(id: number, data: { rating?: number; comment?: string }): Promise<ReviewResponse> {
         try {
             const updates: string[] = [];
-            const values: any[] = [];
+            const values: (number | string | null)[] = [];
             let paramIndex = 1;
 
             if (data.rating !== undefined) {
