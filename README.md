@@ -56,8 +56,11 @@ ONE_API_KEY=your_actual_api_key_here
 ONE_API_BASE_URL=https://the-one-api.dev/v2
 ```
 
-### 4. Start PostgreSQL with Docker
+### 4. Database Setup
 
+### Option 1: Local PostgreSQL (Development)
+
+Start PostgreSQL using Docker:
 ```bash
 docker-compose up -d
 ```
@@ -66,6 +69,56 @@ This will:
 - Start PostgreSQL on port 5432
 - Automatically create the database and schema
 - Set up persistent volumes
+
+Run migrations:
+```bash
+pnpm db:migrate
+```
+
+### Option 2: Supabase (Recommended for Production)
+
+#### Quick Setup (Script-based)
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Get your DATABASE_URL from Settings → Database
+3. Update `.env`:
+   ```bash
+   DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+   ```
+4. Run migration:
+   ```bash
+   pnpm db:migrate
+   ```
+
+#### Advanced Setup (Supabase CLI)
+
+1. Install Supabase CLI:
+   ```bash
+   npm install -g supabase
+   ```
+
+2. Initialize (if not already done):
+   ```bash
+   supabase init
+   ```
+
+3. Link to your project:
+   ```bash
+   supabase link --project-ref YOUR_PROJECT_REF
+   ```
+
+4. Push migrations:
+   ```bash
+   supabase db push
+   ```
+
+**Benefits of Supabase CLI:**
+- Version-controlled migrations
+- Automatic schema diffing
+- Rollback capabilities
+- Team collaboration
+
+> 💡 **Note**: Migrations are stored in `supabase/migrations/` for CLI approach
 
 ### 5. Run the application
 
