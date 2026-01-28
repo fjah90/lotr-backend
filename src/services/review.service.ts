@@ -7,6 +7,7 @@ import type {
 } from '../types/review.types.js';
 import type { PaginatedResponse } from '../types/common.types.js';
 import { DatabaseError, NotFoundError } from '../middleware/error-handler.js';
+import { sanitizeInput } from '../utils/sanitize.js';
 
 class ReviewService {
     private mapReviewToResponse(review: Review): ReviewResponse {
@@ -29,7 +30,10 @@ class ReviewService {
         RETURNING *
       `;
 
-            const values = [data.movieId, data.userName, data.rating, data.comment || null];
+            // Sanitize comment to prevent XSS attacks
+            const sanitizedComment = sanitizeInput(data.comment);
+
+            const values = [data.movieId, data.userName, data.rating, sanitizedComment];
             const result = await pool.query<Review>(query, values);
 
             return this.mapReviewToResponse(result.rows[0]);
